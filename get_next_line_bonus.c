@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbaaloua <rbaaloua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/22 13:10:18 by rbaaloua          #+#    #+#             */
-/*   Updated: 2024/11/26 22:26:47 by rbaaloua         ###   ########.fr       */
+/*   Created: 2024/11/26 08:07:17 by rbaaloua          #+#    #+#             */
+/*   Updated: 2024/11/26 22:19:45 by rbaaloua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	find_newline(char *buf)
 {
@@ -105,18 +105,18 @@ char	*keep_line(char *buf)
 
 char	*get_next_line(int fd)
 {
-	static char	*saved_buf;
+	static char	*saved_buf[OPEN_MAX];
 	char		*next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	saved_buf = read_line(saved_buf, fd);
-	if (!saved_buf)
+	saved_buf[fd] = read_line(saved_buf[fd], fd);
+	if (!saved_buf[fd])
 	{
-		free(saved_buf);
+		free(saved_buf[fd]);
 		return (NULL);
 	}
-	next_line = fetch_line(saved_buf);
-	saved_buf = keep_line(saved_buf);
+	next_line = fetch_line(saved_buf[fd]);
+	saved_buf[fd] = keep_line(saved_buf[fd]);
 	return (next_line);
 }

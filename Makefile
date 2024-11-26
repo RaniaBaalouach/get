@@ -6,11 +6,19 @@ RM = rm -rf
 AR = ar -rcs
 
 SRC =	get_next_line.c get_next_line_utils.c
+BSRC = get_next_line_bonus.c get_next_line_utils_bonus.c
 
 OBJ = $(SRC:.c=.o)
+BOBJ = $(BSRC:.c=.o)
 
 $(NAME): $(OBJ)
-	$(AR) $(NAME) $(OBJ)
+	ar -rcs $(NAME) $(OBJ)
+	
+bonus: $(BOBJ) .bonus
+
+.bonus: $(BOBJ)
+	ar -rcs $(NAME) $(BOBJ)
+	touch .bonus
 
 %.o: %.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -18,11 +26,11 @@ $(NAME): $(OBJ)
 all: $(NAME)
 
 clean:
-	$(RM) $(OBJ) 
+	rm -rf $(OBJ) $(BOBJ) .bonus 
 
 fclean: clean
-	$(RM) $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
