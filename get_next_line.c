@@ -1,5 +1,21 @@
 #include "get_next_line.h"
 
+int	find_newline(char *buf)
+{
+	int	i;
+
+	if (!buf)
+		return (0);
+	i = 0;
+	while (buf[i] != '\0')
+	{
+		if (buf[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*read_line(char *saved_buf, int fd)
 {
 	int		readed;
@@ -16,12 +32,13 @@ char	*read_line(char *saved_buf, int fd)
 		{
 			free(line);
 			free(saved_buf);
-			return (NULL);
+			return (line = NULL, saved_buf = NULL, NULL);
 		}
 		line[readed] = '\0';
 		saved_buf = ft_strjoin(saved_buf, line);
 	}
 	free(line);
+	line = NULL;
 	return (saved_buf);
 }
 
@@ -65,17 +82,19 @@ char	*keep_line(char *buf)
 	if (!buf[i])
 	{
 		free(buf);
+		buf = NULL;
 		return (NULL);
 	}
 	saved_buf = ft_strdup(buf + i + 1);
 	free(buf);
+	buf = NULL;
 	return (saved_buf);
 }
 
 char	*get_next_line(int fd)
 {
-	static char *saved_buf;
-	char *next_line;
+	static char	*saved_buf;
+	char		*next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -84,6 +103,5 @@ char	*get_next_line(int fd)
 		return (NULL);
 	next_line = fetch_line(saved_buf);
 	saved_buf = keep_line(saved_buf);
-
 	return (next_line);
 }

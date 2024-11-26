@@ -9,14 +9,14 @@
 # include <unistd.h>
 
 char	*get_next_line(int fd);
-int find_newline(char *buf);
+int		find_newline(char *buf);
+char	*read_line(char *saved_buf, int fd);
+char	*fetch_line(char *saved_buf);
+char	*keep_line(char *buf);
 size_t	ft_strlen(char *s);
 void	*ft_memcpy(void *dst, void *src, size_t n);
 char	*ft_strdup(char *s1);
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize);
 char	*ft_strjoin(char *s1, char *s2);
-char *read_line(char *saved_buf, int fd);
-char *fetch_line(char *saved_buf);
-char *keep_line(char *buf);
 
 #endif
